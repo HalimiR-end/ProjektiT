@@ -86,3 +86,57 @@ All components should be located in /src/components.
 Avoid changing backend endpoints unless necessary.
 
 You can use custom SVGs or icons, but store them in src/assets.s
+
+-- 1. Krijo databazën
+CREATE DATABASE IF NOT EXISTS fitnessdb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE fitnessdb;
+
+-- 2. Tabela Users
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    passwordhash TEXT NOT NULL
+);
+
+-- 3. Tabela Workouts
+CREATE TABLE workouts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    description TEXT,
+    date DATETIME NOT NULL,
+    userid INT NOT NULL,
+    FOREIGN KEY (userid) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- 4. Tabela WorkoutEntries
+CREATE TABLE workoutentries (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    exercise VARCHAR(100) NOT NULL,
+    reps INT DEFAULT 0,
+    sets INT DEFAULT 0,
+    musclegroup VARCHAR(100),
+    workoutid INT NOT NULL,
+    FOREIGN KEY (workoutid) REFERENCES workouts(id) ON DELETE CASCADE
+);
+
+-- 5. Tabela WeeklyPlans (nëse e përdorni për planifikim javor)
+CREATE TABLE weeklyplans (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    day VARCHAR(20) NOT NULL,
+    activity VARCHAR(100) NOT NULL,
+    notes TEXT,
+    userid INT NOT NULL,
+    FOREIGN KEY (userid) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- 6. Të dhëna testuese
+INSERT INTO users (username, email, passwordhash)
+VALUES ('testuser', 'test@example.com', '$2a$11$123456789012345678901u8M9BpoT3uIJ3DUJ6tY');
+
+INSERT INTO workouts (name, description, date, userid)
+VALUES ('Morning Workout', 'A light session to start the day', NOW(), 1);
+
+INSERT INTO workoutentries (exercise, reps, sets, musclegroup, workoutid)
+VALUES ('Push-ups', 15, 3, 'Chest', 1);
+
