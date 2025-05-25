@@ -140,3 +140,12 @@ VALUES ('Morning Workout', 'A light session to start the day', NOW(), 1);
 INSERT INTO workoutentries (exercise, reps, sets, musclegroup, workoutid)
 VALUES ('Push-ups', 15, 3, 'Chest', 1);
 
+Sigurohu që appsettings.json në backend të duket kështu:
+
+json
+Copy
+Edit
+"ConnectionStrings": {
+  "DefaultConnection": "server=localhost;database=fitnessdb;user=root;password=;"
+}
+password sic e keni ne mysql
